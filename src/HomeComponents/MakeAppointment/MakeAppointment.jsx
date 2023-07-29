@@ -5,7 +5,7 @@ import bgimg from '../../assets/images/appointment.png';
 
 const MakeAppointment = () => {
     return (
-        <section style={{ backgroundImage: `url(${bgimg})` }}>
+        <section className='bg-fixed' style={{ backgroundImage: `url(${bgimg})` }}>
             <div className="hero mt-12">
                 <div className="hero-content flex-col lg:flex-row gap-6">
                     <img src={doctor} className="w-1/2 rounded-lg -mt-16 -mb-4"/>

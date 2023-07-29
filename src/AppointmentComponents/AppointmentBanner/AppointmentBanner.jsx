@@ -5,12 +5,8 @@ import bgimg from '../../assets/images/bg.png'
 import { DayPicker } from 'react-day-picker';
 
 
-const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
-
-    // let footer = <p>Please pick a day.</p>;
-    // if (selectedDate) {
-    //     footer = <p>You picked {format(selectedDate, 'PP')}.</p>;
-    // }
+// const AppointmentBanner = ({ selectedDate, handleDayClick, setSelectedDate }) => {
+const AppointmentBanner = ({ selectedDate, handleDayClick }) => {
 
     return (
         <section style={{ background: `url(${bgimg})`, backgroundSize: "cover", backgroundPosition: 'center' }}>
@@ -21,8 +17,8 @@ const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
                         <DayPicker
                             mode="single"
                             selected={selectedDate}
-                            onSelect={setSelectedDate}
-                            // footer={footer}
+                            // onSelect={setSelectedDate}
+                            onDayClick={handleDayClick}
                         ></DayPicker>
                     </div>
                 </div>

@@ -1,14 +1,44 @@
+// mdhossainjwel687@gmail.com<mdhossain ||
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Contexts/AuthProvider";
 
 const LogIn = () => {
     const { register, handleSubmit, formState: { errors }, } = useForm();
+    const { userLogIn, googleSignUp } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/' ;
 
     const handleSignIn = data => {
-        const email = (data.Email);
-        const password = (data.Password);
-        console.log(email, password);
+        const { email, password } = data;
+        userLogIn(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                navigate(from, { replace: true })
+                console.log(user);
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        console.log(data);
     }
+
+
+    const handleGoogleLogin = () => {
+        googleSignUp()
+            .then(res => {
+                const withGoogleLoginUser = res.user;
+                navigate(from, { replace: true })
+                console.log(withGoogleLoginUser);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
 
     return (
         <section className="flex flex-col items-center">
@@ -19,24 +49,24 @@ const LogIn = () => {
                         <label className="label">
                             <span className="label-text">Email</span>
                         </label>
-                        <input {...register("Email", { required: 'Email is required' })} type="Email" placeholder="Your Email" className="input input-bordered w-full " />
-                        {errors.Email && <p className='text-red-600'>{errors.Email?.message}</p>}
+                        <input {...register("email", { required: 'Email is required' })} type="Email" placeholder="Your Email" className="input input-bordered w-full " />
+                        {errors.email && <p className='text-red-600'>{errors.email?.message}</p>}
                     </div>
                     <div className="form-control w-full ">
                         <label className="label">
                             <span className="label-text">Password</span>
                         </label>
-                        <input {...register("Password", { required: 'Password is required' })} type="Password" placeholder="Your Password" className="input input-bordered w-full " />
+                        <input {...register("password", { required: 'Password is required' })} type="Password" placeholder="Your Password" className="input input-bordered w-full " />
                         {errors.Password && <p className="test-red-500">{errors.password?.message}</p>}
                     </div>
                     <label className="label">
-                        <span className="label-text">Forgot Password</span>
+                        <Link to='/forgetPassword' className="label-text text-secondary">Forgot Password ?</Link>
                     </label>
                     <input className="btn btn-accent w-full mt-6" type="submit" value="Login" />
                 </form>
-                <p >New to Doctors Portal?<Link to="/SignUp" className="text-sky-500">Create new account</Link> </p>
+                <p >New to Doctors Portal?<Link to="/signUp" className="text-sky-500">Create new account</Link> </p>
                 <div className="divider">OR</div>
-                <input className="btn btn-outline w-full mt-6" type="submit" value="CONTINUE WITH GOOGLE" />
+                <input onClick={handleGoogleLogin} className="btn btn-outline w-full mt-2" type="submit" value="CONTINUE WITH GOOGLE" />
             </div>
         </section>
     );

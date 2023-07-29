@@ -5,11 +5,14 @@ import AppointmentOptions from "../../AppointmentComponents/AvailableAppointment
 const Appointment = () => {
 
     const [selectedDate, setSelectedDate] = useState(new Date());
+    // console.log(setSelectedDate);
+    const handleDayClick = (res) => setSelectedDate(res);
     return (
         <div>
             <AppointmentBanner
                 selectedDate={selectedDate}
-                setSelectedDate={setSelectedDate}
+                // setSelectedDate={setSelectedDate}
+                handleDayClick={handleDayClick}
             ></AppointmentBanner>
             <AppointmentOptions
                 selectedDate={selectedDate}

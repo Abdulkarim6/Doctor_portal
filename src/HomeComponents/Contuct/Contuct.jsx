@@ -2,7 +2,7 @@ import bgimg from '../../assets/images/appointment.png'
 import Button from '../../ShareComponents/Button/Button';
 const Contuct = () => {
     return (
-        <section style={{ backgroundImage: `url(${bgimg})`, backgroundPosition: 'center' }} className="flex flex-col items-center mt-6 mb-6 rounded">
+        <section style={{ backgroundImage: `url(${bgimg})`, backgroundPosition: 'center' }} className="flex flex-col items-center bg-fixed mt-6 mb-6 rounded">
             <div className='mt-6'>
                 <h2 className='text-sky-500 font-lg text-lg'>Contuct Us</h2>
                 <h2 className='text-white font-medium text-xl'>Stay Connected With Us</h2>
