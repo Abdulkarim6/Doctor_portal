@@ -5,7 +5,7 @@ import AppointmentOptions from "../../AppointmentComponents/AvailableAppointment
 const Appointment = () => {
 
     const [selectedDate, setSelectedDate] = useState(new Date());
-    // console.log(setSelectedDate);
+   
     const handleDayClick = (res) => setSelectedDate(res);
     return (
         <div>

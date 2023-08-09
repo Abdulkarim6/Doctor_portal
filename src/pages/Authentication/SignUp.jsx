@@ -2,42 +2,80 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from 'react';
+import useToken from '../../hooks/useToken';
+import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, googleSignUp, updateUser } = useContext(AuthContext);
+    const [createdUserEmail, setCreatedUserEmail] = useState('');
+
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/'
+    const from = location.state?.from?.pathname || "/";
+
+    const [token] = useToken(createdUserEmail);
+    useEffect(() => {
+        if (token) {
+            navigate(from, { replace: true });
+            return;
+        }
+    }, [navigate, from, token]);
+
 
     const handleSignUp = data => {
-        const { Name, email, password } = data;
+        const { name, email, password } = data;
         createUser(email, password)
-            .then(result => {
-                const user = result.user;
-                // handleUpdateUser(Name)
-                updateUser({ displayName: Name })
-                console.log(user);
-                navigate(from, { replace: true })
+            .then(() => {
+                updateUser({ displayName: name })
+                    .then(() => {
+                        UserDataPostDb(data);
+                    })
+                    .catch(err => console.log(err));
             })
             .catch(err => {
                 console.error(err);
             })
-
-        console.log(data, Name);
     };
+
 
     const handleGoogleSignup = () => {
         googleSignUp()
             .then(res => {
                 const withGoogleSignUpUser = res.user;
-                navigate(from, { replace: true })
-                console.log(withGoogleSignUpUser);
+                const data = { name: withGoogleSignUpUser?.displayName, email: withGoogleSignUpUser?.email }
+                UserDataPostDb(data);
             })
             .catch(err => {
                 console.log(err);
             })
-    }
+    };
+
+    const UserDataPostDb = (data) => {
+        const { name, email } = data;
+        const user = { name, email }
+        if (user) {
+            fetch('http://localhost:5000/user', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data?.isAllReadyFoundData === "AllReadyFoundData" || data?.acknowledged === true) {
+                        toast.success(`${name} createed account Successfully`);
+                        setCreatedUserEmail(email)
+                    }
+                });
+        }
+    };
+
+
     return (
         <section className="flex flex-col items-center">
             <h3 className="text-3xl font-medium text-sky-500 mt-5">Wellcome to Doctors Portal</h3>
@@ -47,7 +85,7 @@ const SignUp = () => {
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
-                        <input {...register("Name", { required: 'Name is required' })} type="text" placeholder="Your Name" className="input input-bordered w-full " />
+                        <input {...register("name", { required: 'Name is required' })} type="text" placeholder="Your Name" className="input input-bordered w-full " />
                         {errors.Name && <p className='text-red-600'>{errors.Name?.message}</p>}
                     </div>
                     <div className="form-control w-full ">

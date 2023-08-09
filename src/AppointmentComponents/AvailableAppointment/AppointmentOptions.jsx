@@ -15,7 +15,6 @@ const AppointmentOptions = ({ selectedDate }) => {
 
     // treatment is availableAppointmentOption
     const [treatment, setTreatment] = useState(null);
-    console.log(treatment);
 
     const date = format(selectedDate, 'PP');
 
@@ -42,6 +41,7 @@ const AppointmentOptions = ({ selectedDate }) => {
                                 <h2 className="card-title text-2xl font-medium text-sky-500">{availableAppointmentOption.name}</h2>
                                 <p>{availableAppointmentOption.slots.length > 0 ? availableAppointmentOption.slots[0] : "Try another day"}</p>
                                 <p>{availableAppointmentOption.slots.length} {availableAppointmentOption.slots.length > 1 ? 'spaces' : 'space'} available</p>
+                                <p>Price : <strong>$ {availableAppointmentOption.price}</strong></p>
                                 <div className="my-2">
                                     <label onClick={() => setTreatment(availableAppointmentOption)} htmlFor="booking_Modal" className="btn btn-primary bg-gradient-to-r from-primary to-secondary">Book Appointment</label>
                                 </div>

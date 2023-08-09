@@ -2,6 +2,7 @@
 import doctor from '../../assets/images/doctor-bulk.png'
 import Button from '../../ShareComponents/Button/Button';
 import bgimg from '../../assets/images/appointment.png';
+import { Link } from "react-router-dom";
 
 const MakeAppointment = () => {
     return (
@@ -13,7 +14,7 @@ const MakeAppointment = () => {
                         <h1 className="lg:text-6xl text-4xl font-bold pb-3 text-sky-500">Appointment </h1>
                         <h1 className="text-white lg:text-5xl text-2xl font-bold">Make an appointment Today</h1>
                         <p className=" text-white py-6">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsumis that it has a more-or-less normal distribution of letters,as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page</p>
-                        <Button>Get Started</Button>
+                        <Link to='/appointment'><Button>Get Appointment</Button> </Link>
                     </div>
                 </div>
             </div>

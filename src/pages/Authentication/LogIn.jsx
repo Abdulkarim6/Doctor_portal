@@ -1,43 +1,77 @@
 // mdhossainjwel687@gmail.com<mdhossain ||
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import useToken from "../../hooks/useToken";
 
 const LogIn = () => {
     const { register, handleSubmit, formState: { errors }, } = useForm();
     const { userLogIn, googleSignUp } = useContext(AuthContext);
+    const [loginError, setLoginError] = useState('');
+    const [loginUserEmail, setLoginUserEmail] = useState('');
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/' ;
+    const from = location.state?.from?.pathname || '/';
+
+
+    const [token] = useToken(loginUserEmail);
+    useEffect(() => {
+        if (token) {
+            navigate(from, { replace: true });
+        }
+    }, [navigate, from, token]);
+
 
     const handleSignIn = data => {
         const { email, password } = data;
         userLogIn(email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                navigate(from, { replace: true })
-                console.log(user);
+            // .then((userCredential) => {
+            .then(() => {
+                // const user = userCredential.user;
+                setLoginUserEmail(email);
             })
             .catch(error => {
-                console.log(error)
+                setLoginError(error.message)
             });
-        console.log(data);
-    }
+    };
 
 
     const handleGoogleLogin = () => {
         googleSignUp()
             .then(res => {
                 const withGoogleLoginUser = res.user;
-                navigate(from, { replace: true })
-                console.log(withGoogleLoginUser);
+                const data = { name: withGoogleLoginUser?.displayName, email: withGoogleLoginUser?.email, }
+                UserDataPostDb(data);
             })
             .catch(err => {
                 console.log(err);
             })
-    }
+    };
+
+    const UserDataPostDb = (data) => {
+        const { name, email } = data;
+        const user = { name, email }
+        if (user) {
+            fetch('http://localhost:5000/user', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            })
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data?.isAllReadyFoundData === "AllReadyFoundData" || data?.acknowledged === true) {
+                        toast.success(`${name} Login account Successfully`);
+                        setLoginUserEmail(email)
+                    }
+                });
+        }
+    };
 
 
     return (
@@ -62,6 +96,9 @@ const LogIn = () => {
                     <label className="label">
                         <Link to='/forgetPassword' className="label-text text-secondary">Forgot Password ?</Link>
                     </label>
+                    {
+                        loginError && <p className='text-red-500'>{loginError}</p>
+                    }
                     <input className="btn btn-accent w-full mt-6" type="submit" value="Login" />
                 </form>
                 <p >New to Doctors Portal?<Link to="/signUp" className="text-sky-500">Create new account</Link> </p>

@@ -8,9 +8,15 @@ export default {
           secondary: "#19D3AE",
           accent: "#3A4256",
           neutral: "#3d4451",
+          aqua: '#AFB7CA',
           "base-100": "#FFFFFF",
         },
       },
+      "garden",
+      "lemonade",
+      "night",
+      "coffee",
+      "black",
     ],
   },
   content: [
@@ -20,8 +26,8 @@ export default {
   theme: {
     extend: {},
   },
-  
 
-plugins: [require("daisyui")],
+
+  plugins: [require("daisyui")],
 }
 

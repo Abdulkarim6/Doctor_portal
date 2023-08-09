@@ -14,11 +14,11 @@ const ForgetPassword = () => {
             .then(() => {
                 setEmailMessage('The Email has been sent; Check your Inbox!')
             })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
-            });
+            // .catch((error) => {
+            //     const errorCode = error.code;
+            //     const errorMessage = error.message;
+            //     console.log(errorCode, errorMessage);
+            // });
     }
 
     return (

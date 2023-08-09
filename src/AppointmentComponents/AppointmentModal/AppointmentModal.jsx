@@ -2,13 +2,20 @@ import { format } from "date-fns";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../Contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const AppointmentModal = ({ treatment, setTreatment, selectedDate ,refetch}) => {
+const AppointmentModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
     const { user } = useContext(AuthContext);
-    const { name, slots } = treatment;
-    console.log(treatment);
-
+    const { name, slots, price } = treatment;
     const date = format(selectedDate, 'PP');
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!user) {
+            navigate('/logIn')
+        }
+    }, [navigate, user])
 
     const handleBooking = (e) => {
         e.preventDefault();
@@ -17,19 +24,18 @@ const AppointmentModal = ({ treatment, setTreatment, selectedDate ,refetch}) => 
         const patientEmail = from.patientEmail.defaultValue;
         const patientNumber = from.patientNumber.defaultValue;
         const slot = from.slot.value;
-        // console.log(slot);
 
         const booking = {
             treatmentName: treatment?.name,
             appointmentDate: date,
-            patientName, patientEmail, patientNumber, slot
+            patientName, patientEmail, patientNumber, slot, price
         }
-        console.log(booking);
 
         fetch("http://localhost:5000/bookings", {
             method: "POST",
             headers: {
-                'content-Type': "application/json"
+                'content-Type': "application/json",
+                authorization: `bearer ${localStorage.getItem('accessToken')}`
             },
             body: JSON.stringify(booking)
         })
@@ -43,7 +49,6 @@ const AppointmentModal = ({ treatment, setTreatment, selectedDate ,refetch}) => 
                     toast.error(data.message);
                     setTreatment(null);
                 }
-                console.log(data);
             })
 
     }
