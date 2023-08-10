@@ -5,7 +5,7 @@ const Users = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
-            const res = await fetch("http://localhost:5000/users", {
+            const res = await fetch("https://hospital-server-code.vercel.app/users", {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`
                 }
@@ -16,7 +16,7 @@ const Users = () => {
     });
 
     const handleMakeAdmin = (user) => {
-        fetch(`http://localhost:5000/users/makeAdmin/${user?._id}`, {
+        fetch(`https://hospital-server-code.vercel.app/users/makeAdmin/${user?._id}`, {
             method: 'PUT',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -32,7 +32,7 @@ const Users = () => {
     };
 
     const handleDelete = user => {
-        fetch(`http://localhost:5000/user?_id=${user?._id}`, {
+        fetch(`https://hospital-server-code.vercel.app/user?_id=${user?._id}`, {
             method: 'DELETE',
             headers: {
                 authorization: `bearer ${localStorage.getItem('accessToken')}`

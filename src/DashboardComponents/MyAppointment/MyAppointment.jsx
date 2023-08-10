@@ -6,14 +6,23 @@ import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
 const MyAppointment = () => {
+    const [dataLoadingBydate, setdataLoadingBydate] = useState(false);
+    console.log(dataLoadingBydate);
     const [patientAppointmentsByDate, setPatientAppointmentsByDate] = useState();
+    console.log(patientAppointmentsByDate, '10');
+    const [patientAllAppointments, setPatientAllAppointments] = useState();
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const handleDayClick = (res) => setSelectedDate(res);
+    const handleDayClick = (res) => {
+        setPatientAppointmentsByDate('');
+        setSelectedDate(res);
+        setdataLoadingBydate(true);
+    };
     const date = format(selectedDate, 'PP');
 
     const [visible, setVisible] = useState(false);
 
     const handleDaypicker = () => {
+
         setVisible(current => !current)
     }
 
@@ -22,7 +31,7 @@ const MyAppointment = () => {
     const { data: patientAppointments = [] } = useQuery({
         queryKey: ['patientAppointments', user?.email, date],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/patientAppointments?email=${user?.email}&date=${date}`, {
+            const res = await fetch(`https://hospital-server-code.vercel.app/patientAppointments?email=${user?.email}&date=${date}`, {
                 headers: {
                     authorization: (`bearer ${localStorage.getItem('accessToken')}`)
                 }
@@ -31,14 +40,22 @@ const MyAppointment = () => {
             return data;
         }
     });
-    const patientAllAppointments = patientAppointments[0];
+    useEffect(() => {
+        if (patientAppointments?.length) {
+            setPatientAllAppointments(patientAppointments[0])
+        }
+    }, [patientAppointments, patientAllAppointments]);
+
 
     useEffect(() => {
-        const patientAppointmentsOnDate = patientAppointments[1];
-        if (visible === true) {
-            setPatientAppointmentsByDate(patientAppointmentsOnDate);
+        if (visible === true && patientAppointments?.length) {
+            console.log(patientAppointments, '56');
+            setPatientAppointmentsByDate(patientAppointments[1]);
+            setdataLoadingBydate(false);
         }
-    }, [visible, patientAppointments])
+    }, [visible, patientAppointments]);
+
+    console.log(patientAppointments, '58');
 
     return (
         <div className="w-full">
@@ -67,33 +84,37 @@ const MyAppointment = () => {
                         <th>Treatment</th>
                         <th>Date</th>
                         <th>Time</th>
-                        <th>PAYMENT</th>
+                        <th>Payment</th>
                     </tr>
                 </thead>
                 <tbody>
                     {/* row 1 */}
-                    {
+                    {dataLoadingBydate ?
+                        <progress className="progress w-56"></progress>
+                        :
                         patientAppointmentsByDate ?
-                            patientAppointmentsByDate?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
-                                <td>{i + 1}.<span className="ml-3"> {patientAppointment?.patientName}</span></td>
-                                <td>{patientAppointment?.treatmentName}</td>
-                                <td>{patientAppointment?.appointmentDate}</td>
-                                <td>{patientAppointment?.slot.split('-')[0]}</td>
-                                <td>
-                                    {
-                                        !patientAppointment?.paid &&
-                                        <Link to={`/dashboard/payment/${patientAppointment._id}`}><button className="btn btn-secondary btn-sm ">Pay</button> </Link>
-                                    }
-                                    {
-                                        patientAppointment?.paid &&
-                                        <button className="btn btn-secondary btn-disabled">Paid</button>
-                                    }
-                                </td>
-                            </tr>)
+                            !patientAppointmentsByDate?.length ? <tr className="lg:text-xl text-base text-secondary font-bold whitespace-nowrap">You have No appoinment on {date}</tr>
+                                :
+                                patientAppointmentsByDate?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
+                                    <td>{i + 1}.<span className="ml-3"> {patientAppointment?.patientName}</span></td>
+                                    <td>{patientAppointment?.treatmentName}</td>
+                                    <td>{patientAppointment?.appointmentDate}</td>
+                                    <td>{patientAppointment?.slot.split('-')[0]}</td>
+                                    <td>
+                                        {
+                                            !patientAppointment?.paid &&
+                                            <Link to={`/dashboard/payment/${patientAppointment._id}`}><button className="btn btn-secondary btn-sm ">Pay</button> </Link>
+                                        }
+                                        {
+                                            patientAppointment?.paid &&
+                                            <button className="btn btn-secondary btn-disabled">Paid</button>
+                                        }
+                                    </td>
+                                </tr>)
 
                             :
 
-                             patientAllAppointments?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
+                            patientAllAppointments?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
                                 <td>{i + 1}.<span className="ml-3"> {patientAppointment?.patientName}</span></td>
                                 <td>{patientAppointment?.treatmentName}</td>
                                 <td>{patientAppointment?.appointmentDate}</td>

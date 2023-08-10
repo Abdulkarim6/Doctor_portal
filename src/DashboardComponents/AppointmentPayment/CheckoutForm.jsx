@@ -19,7 +19,7 @@ const CheckoutForm = ({ appopintment }) => {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch("http://localhost:5000/create-payment-intent", {
+        fetch("https://hospital-server-code.vercel.app/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ price }),
@@ -79,7 +79,7 @@ const CheckoutForm = ({ appopintment }) => {
             }
 
             //store payment to db
-            fetch('http://localhost:5000/payment', {
+            fetch('https://hospital-server-code.vercel.app/payment', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

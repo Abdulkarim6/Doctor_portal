@@ -13,7 +13,7 @@ const ManageDoctor = () => {
     const { data: doctors = [], refetch } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/doctors', {
+            const res = await fetch('https://hospital-server-code.vercel.app/doctors', {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`
                 }
@@ -26,7 +26,7 @@ const ManageDoctor = () => {
 
 
     const deleteAction = doctor => {
-        fetch(`http://localhost:5000/doctor?_id=${doctor?._id}`, {
+        fetch(`https://hospital-server-code.vercel.app/doctor?_id=${doctor?._id}`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'application/json',

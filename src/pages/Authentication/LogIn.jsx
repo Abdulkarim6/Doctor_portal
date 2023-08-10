@@ -1,4 +1,5 @@
 // mdhossainjwel687@gmail.com<mdhossain ||
+import loginBanner from '../../assets/images/login.png'
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -55,7 +56,7 @@ const LogIn = () => {
         const { name, email } = data;
         const user = { name, email }
         if (user) {
-            fetch('http://localhost:5000/user', {
+            fetch('https://hospital-server-code.vercel.app/user', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
@@ -75,9 +76,10 @@ const LogIn = () => {
 
 
     return (
-        <section className="flex flex-col items-center">
-            <h3 className="text-3xl font-medium text-sky-500 mt-5">Please Login</h3>
-            <div className="w-96 p-5 shadow-xl rounded text-left">
+        <section className="mt-5 flex flex-col lg:flex-row items-center justify-center gap-x-5">
+             <img src={loginBanner} className="hidden lg:block w-1/3 rounded-lg shadow-2xl" />
+            <div className="w-96 p-7 shadow-xl rounded text-left">
+                <h3 className="text-3xl font-medium text-sky-500 text-center mt-5">Please Login</h3>
                 <form onSubmit={handleSubmit(handleSignIn)} >
                     <div className="form-control w-full ">
                         <label className="label">

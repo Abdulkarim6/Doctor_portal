@@ -57,7 +57,7 @@ const SignUp = () => {
         const { name, email } = data;
         const user = { name, email }
         if (user) {
-            fetch('http://localhost:5000/user', {
+            fetch('https://hospital-server-code.vercel.app/user', {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'
