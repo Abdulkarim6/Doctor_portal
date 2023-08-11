@@ -7,13 +7,11 @@ import { Link } from "react-router-dom";
 
 const MyAppointment = () => {
     const [dataLoadingBydate, setdataLoadingBydate] = useState(false);
-    console.log(dataLoadingBydate);
     const [patientAppointmentsByDate, setPatientAppointmentsByDate] = useState();
-    console.log(patientAppointmentsByDate, '10');
     const [patientAllAppointments, setPatientAllAppointments] = useState();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const handleDayClick = (res) => {
-        setPatientAppointmentsByDate('');
+        setPatientAppointmentsByDate();
         setSelectedDate(res);
         setdataLoadingBydate(true);
     };
@@ -42,27 +40,31 @@ const MyAppointment = () => {
     });
     useEffect(() => {
         if (patientAppointments?.length) {
-            setPatientAllAppointments(patientAppointments[0])
+            setPatientAllAppointments(patientAppointments[0]);
+            setdataLoadingBydate(false);
         }
     }, [patientAppointments, patientAllAppointments]);
 
 
     useEffect(() => {
         if (visible === true && patientAppointments?.length) {
-            console.log(patientAppointments, '56');
             setPatientAppointmentsByDate(patientAppointments[1]);
             setdataLoadingBydate(false);
         }
     }, [visible, patientAppointments]);
 
-    console.log(patientAppointments, '58');
 
     return (
         <div className="w-full">
             <div className="flex justify-between items-center">
-                <h3 className="text-base lg:text-2xl font-bold text-sky-500 text-left p-5">My total Appointments : {patientAllAppointments?.length}</h3>
+                {
+                    patientAppointmentsByDate ?
+                        <h3 className="text-xl lg:text-2xl font-bold text-sky-500 text-left p-5">{`${date} My Appointments : ${patientAppointmentsByDate?.length}`}</h3>
+                        :
+                        <h3 className="text-xl lg:text-2xl font-bold text-sky-500 text-left p-5">{`My total Appointments : ${patientAllAppointments?.length}`}</h3>
+                }
                 <div>
-                    <button onClick={handleDaypicker} className="btn btn-accent btn-outline"> {date}</button>
+                    <button onClick={handleDaypicker} className="btn btn-accent btn-outline">{date}</button>
                 </div>
                 <div data-theme="garden" className="absolute top-16 right-0 text-black font-medium rounded">
                     {
@@ -76,10 +78,8 @@ const MyAppointment = () => {
                 </div>
             </div>
             <table className="table ml-5 static">
-                {/* head */}
                 <thead>
                     <tr className="md:text-xl lg:text-2xl text-sky-500">
-                        {/* <th className="hidden md:block lg:block">Quantity</th> */}
                         <th>Q. Name</th>
                         <th>Treatment</th>
                         <th>Date</th>
@@ -88,22 +88,21 @@ const MyAppointment = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* row 1 */}
                     {dataLoadingBydate ?
-                        <progress className="progress w-56"></progress>
+                        <tr><td><progress className="progress w-56"></progress></td></tr>
                         :
                         patientAppointmentsByDate ?
-                            !patientAppointmentsByDate?.length ? <tr className="lg:text-xl text-base text-secondary font-bold whitespace-nowrap">You have No appoinment on {date}</tr>
+                            !patientAppointmentsByDate?.length ? <tr className="lg:text-xl text-base text-secondary font-bold whitespace-nowrap"><td>{`You have No appoinment on ${date}`}</td></tr>
                                 :
                                 patientAppointmentsByDate?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
-                                    <td>{i + 1}.<span className="ml-3"> {patientAppointment?.patientName}</span></td>
+                                    <td>{i + 1}.<span className="ml-3">{patientAppointment?.patientName}</span></td>
                                     <td>{patientAppointment?.treatmentName}</td>
                                     <td>{patientAppointment?.appointmentDate}</td>
                                     <td>{patientAppointment?.slot.split('-')[0]}</td>
                                     <td>
                                         {
                                             !patientAppointment?.paid &&
-                                            <Link to={`/dashboard/payment/${patientAppointment._id}`}><button className="btn btn-secondary btn-sm ">Pay</button> </Link>
+                                            <Link to={`/dashboard/payment/${patientAppointment._id}`}><button className="btn btn-secondary btn-sm ">Pay</button></Link>
                                         }
                                         {
                                             patientAppointment?.paid &&

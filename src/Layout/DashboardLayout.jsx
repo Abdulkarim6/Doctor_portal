@@ -10,10 +10,14 @@ const DashboardLayout = () => {
     return (
         <>
             <Navber></Navber>
+            <label title="Dashboard" tabIndex={2} htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden flex justify-end">
+             <span className="text-secondary text-xl font-bold">Dashboard</span><svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
 
             <div className="drawer lg:drawer-open">
                 <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content overflow-scroll">
+
                     {/* Page content here */}
 
                     <Outlet></Outlet>

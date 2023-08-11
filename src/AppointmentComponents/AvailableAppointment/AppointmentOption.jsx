@@ -3,7 +3,7 @@
 
 
 // const AppointmentOption = ({ availableAppointmentOption, setTreatment }) => {
-//     // console.log(availableAppointmentOption);
+//     
 //     const { name, slots } = availableAppointmentOption;
 
 //     function handleClick() {

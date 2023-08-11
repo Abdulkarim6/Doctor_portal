@@ -1,18 +1,26 @@
+import { useEffect } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthProvider";
 
 const Navber = () => {
     const { user, userLogOut } = useContext(AuthContext);
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        const userName = user?.displayName;
+        setUserName(userName)
+    }, [user?.displayName, user]);
 
     const handleLogOut = () => {
         userLogOut()
             .then(() => { })
             .then(error => console.log(error))
-    }
+    };
 
     const menuItems = <>
-        <li><Link to={'/'}>{user?.displayName}</Link></li>
+        <li><Link to={'/'}>{userName}</Link></li>
         <li><Link to={'/'}>Home</Link></li>
         <li><Link to={'/appointment'}>Appoinment</Link></li>
         <li><Link to={'/about'}>About</Link></li>
@@ -49,9 +57,6 @@ const Navber = () => {
                         {menuItems}
                     </ul>
                 </div>
-                <label title="Dashboard" tabIndex={2}  htmlFor="dashboard-drawer" className="btn btn-ghost lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                </label>
             </div>
         </section>
     );
