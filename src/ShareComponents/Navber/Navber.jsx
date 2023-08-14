@@ -25,7 +25,7 @@ const Navber = () => {
         <li><Link to={'/appointment'}>Appoinment</Link></li>
         <li><Link to={'/about'}>About</Link></li>
         <li><Link to={'/testimonials'}>Reviews</Link></li>
-        <li><Link to={'/contuct'}>Contuct us</Link></li>
+        <li><Link to={'/contuct'}>Contuct Us</Link></li>
         {
             user?.uid ?
                 <>

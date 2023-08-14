@@ -78,7 +78,7 @@ const SignUp = () => {
 
     return (
         <section className="flex flex-col items-center">
-            <h3 className="text-3xl font-medium text-sky-500 mt-5">Wellcome to Doctors Portal</h3>
+            <h3 className="text-xl lg:text-3xl font-medium text-sky-500 mt-5">Wellcome to Doctors Portal</h3>
             <div className="w-96 p-5 shadow-xl rounded text-left">
                 <form onSubmit={handleSubmit(handleSignUp)} >
                     <div className="form-control w-full ">
