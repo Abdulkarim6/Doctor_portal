@@ -16,7 +16,7 @@ export default {
       "lemonade",
       "night",
       "coffee",
-      "black",
+      "dark",
     ],
   },
   content: [

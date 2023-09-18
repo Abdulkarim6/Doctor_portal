@@ -66,7 +66,7 @@ const MyAppointment = () => {
                 <div>
                     <button onClick={handleDaypicker} className="btn btn-accent btn-outline">{date}</button>
                 </div>
-                <div data-theme="garden" className="absolute top-16 right-0 text-black font-medium rounded">
+                <div data-theme="garden" className="absolute top-16 right-0  font-medium rounded">
                     {
                         visible &&
                         <DayPicker
@@ -92,9 +92,9 @@ const MyAppointment = () => {
                         <tr><td><progress className="progress w-56"></progress></td></tr>
                         :
                         patientAppointmentsByDate ?
-                            !patientAppointmentsByDate?.length ? <tr className="lg:text-xl text-base text-secondary font-bold whitespace-nowrap"><td>{`You have No appoinment on ${date}`}</td></tr>
+                            !patientAppointmentsByDate?.length ? <tr className="lg:text-xl text-base font-bold whitespace-nowrap"><td>{`You have No appoinment on ${date}`}</td></tr>
                                 :
-                                patientAppointmentsByDate?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
+                                patientAppointmentsByDate?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap md:text-base lg:text-xl font-medium">
                                     <td>{i + 1}.<span className="ml-3">{patientAppointment?.patientName}</span></td>
                                     <td>{patientAppointment?.treatmentName}</td>
                                     <td>{patientAppointment?.appointmentDate}</td>
@@ -113,7 +113,7 @@ const MyAppointment = () => {
 
                             :
 
-                            patientAllAppointments?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap text-black md:text-base lg:text-xl font-medium">
+                            patientAllAppointments?.map((patientAppointment, i) => <tr key={patientAppointment._id} className="hover whitespace-nowrap md:text-base lg:text-xl font-medium">
                                 <td>{i + 1}.<span className="ml-3"> {patientAppointment?.patientName}</span></td>
                                 <td>{patientAppointment?.treatmentName}</td>
                                 <td>{patientAppointment?.appointmentDate}</td>

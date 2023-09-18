@@ -54,7 +54,7 @@ const Users = () => {
             <table className="table ml-5">
                 {/* head */}
                 <thead>
-                    <tr className="md:text-xl lg:text-2xl text-black">
+                    <tr className="md:text-xl lg:text-2xl text-sky-500">
                         <th className="hidden md:block lg:block">Quantity</th>
                         <th>Name</th>
                         <th>email</th>
@@ -64,7 +64,7 @@ const Users = () => {
                 </thead>
                 <tbody>
                     {
-                        users?.map((user, i) => <tr key={user?._id} className="hover text-black md:text-base lg:text-xl font-medium">
+                        users?.map((user, i) => <tr key={user?._id} className="hover md:text-base lg:text-xl font-medium">
                             <th className="hidden md:block lg:block text-center">{i + 1}</th>
                             <td>{user?.name}</td>
                             <td>{user?.email}</td>
@@ -72,7 +72,7 @@ const Users = () => {
                                 user?.role !== 'admin' ?
                                     <td> <button onClick={() => handleMakeAdmin(user)} className="btn btn-sm btn-primary">Make Admin</button ></td>
                                     :
-                                    <td> <button className="btn btn-sm btn-primary text-black" disabled> Admin</button ></td>
+                                    <td> <button className="btn btn-sm btn-primary" disabled> Admin</button ></td>
                             }
                             <td><button onClick={() => handleDelete(user)} className="btn btn-sm btn-error" >delete</button ></td>
                         </tr>)

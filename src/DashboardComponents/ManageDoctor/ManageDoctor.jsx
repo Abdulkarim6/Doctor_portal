@@ -46,7 +46,7 @@ const ManageDoctor = () => {
         <section>
             <h3 className="text-2xl font-bold text-sky-500 text-left p-5">Manage Doctors : {doctors?.length}</h3>
             <div className="overflow-x-auto">
-                <table className="table text-black">
+                <table className="table">
                     {/* head */}
                     <thead>
                         <tr className='text-2xl text-sky-500'>
